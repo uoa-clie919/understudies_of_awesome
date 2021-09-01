@@ -39,7 +39,7 @@ state = "super-secret-state"
 # API endpoints
 SESSION_ENDPOINT = f"{API_URL}/session/"
 CONSUMPTION_SUMMARY_ENDPOINT = f"{API_URL}/consumption/summary/"+"{}/{}/"
-
+CONSUMPTION_AVERAGE_ENDPOINT = f"{API_URL}/consumption/averages/"+"{}/{}/"
 
 
 @app.route("/")
@@ -132,14 +132,22 @@ def sample_api_calls():
         CONSUMPTION_SUMMARY_ENDPOINT.format(customer_number, connection_id)
     )
 
+    #TESTING
+    averages_response = oauth_session.get(
+        CONSUMPTION_AVERAGE_ENDPOINT.format(customer_number, connection_id)
+    )
+
     return """
         <h1>/session/ response</h1>
         <div>%s</div>
         <h1>/consumption/summary/ response</h1>
         <div>%s</div>
+        <h1>consumption averages</h1>
+        <div>%s</div>
     """ % (
         dumps(response.json(), indent=3),
         dumps(summary_response.json(), indent=3),
+        dumps(averages_response.json(), indent=3)
     )
 
 
