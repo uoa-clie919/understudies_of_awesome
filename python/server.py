@@ -142,18 +142,11 @@ def sample_api_calls():
     averages_response = oauth_session.get(
         CONSUMPTION_AVERAGE_ENDPOINT.format(customer_number, connection_id)
     )
-    points=0
-    for i in averages_response.json()["data"]["usage"][date]["intervals"]:
-        amount = averages_response.json()["data"]["usage"][date]["intervals"][i]["consumption"]
-        hour = averages_response.json()["data"]["usage"][date]["intervals"][i]["time"]
-        hour = hour[0]
 
-        if hour == "6" or hour == "7" or hour == "8":
-            points = points - 10*float(amount)
-        else:
-            points = points + 10*float(amount)
+    points = pointCalculations(averages_response,date)
+    
 
-        
+
 
 
     return """
@@ -169,6 +162,19 @@ def sample_api_calls():
         dumps(averages_response.json(), indent=3),
         points
     )
+
+def pointCalculations(averages_response,day):
+    points=0
+    for i in averages_response.json()["data"]["usage"][day]["intervals"]:
+        amount = averages_response.json()["data"]["usage"][day]["intervals"][i]["consumption"]
+        hour = averages_response.json()["data"]["usage"][day]["intervals"][i]["time"]
+        hour = hour[0]
+
+        if hour == "6" or hour == "7" or hour == "8":
+            points = points - 10*float(amount)
+        else:
+            points = points + 10*float(amount)
+    return points
 
 
 if __name__ == "__main__":
