@@ -143,7 +143,7 @@ def sample_api_calls():
         CONSUMPTION_AVERAGE_ENDPOINT.format(customer_number, connection_id)
     )
 
-    points = pointCalculations(averages_response,date)
+    negPoints,posPoints = pointCalculations(averages_response,date)
     
 
 
@@ -154,27 +154,31 @@ def sample_api_calls():
         <div>%s</div>
         <h1>consumption averages</h1>
         <div>%s</div>
-        <h1>points</h1>
+        <h1>negative points</h1>
+        <div>%s</div>
+        <h1>positive points</h1>
         <div>%s</div>
     """ % (
         dumps(response.json(), indent=3),
         # dumps(summary_response.json(), indent=3),
         dumps(averages_response.json(), indent=3),
-        points
+        negPoints,
+        posPoints
     )
 
 def pointCalculations(averages_response,day):
-    points=0
+    npoints=0
+    ppoints =0
     for i in averages_response.json()["data"]["usage"][day]["intervals"]:
         amount = averages_response.json()["data"]["usage"][day]["intervals"][i]["consumption"]
         hour = averages_response.json()["data"]["usage"][day]["intervals"][i]["time"]
         hour = hour[0]
 
         if hour == "6" or hour == "7" or hour == "8":
-            points = points - 10*float(amount)
+            npoints = npoints + 10*float(amount)
         else:
-            points = points + 10*float(amount)
-    return points
+            ppoints = ppoints + 10*float(amount)
+    return npoints,ppoints
 
 
 if __name__ == "__main__":
