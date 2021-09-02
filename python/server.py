@@ -4,6 +4,8 @@ from json import dumps
 
 import decouple
 import time
+import csv
+from datetime import datetime
 
 from oauthlib.common import urldecode
 from oauthlib.oauth2 import WebApplicationClient
@@ -37,6 +39,7 @@ scope = decouple.config("SCOPES", cast=lambda v: [s.strip() for s in v.split(','
 # An unguessable random string. It is used to protect against CSRF attacks.
 state = "super-secret-state"
 
+# Today's date
 date = "2019-12-14"
 
 
@@ -137,16 +140,39 @@ def sample_api_calls():
     #     CONSUMPTION_SUMMARY_ENDPOINT.format(customer_number, connection_id)
     #     # params = {'start_date':'2017-12-14', 'end_date':'2017-12-18'}
     # )
+
+    # wait a bit, to prevent error of too many requests
     time.sleep(1)
-    #TESTING
+
+    # GET customer's consumption averages
     averages_response = oauth_session.get(
         CONSUMPTION_AVERAGE_ENDPOINT.format(customer_number, connection_id)
     )
 
+    # Retrieve customer points data for last seven days
+    seven_day_points = [0] * 7
+    points_data = csv.reader(open('customer_points_csv.txt', 'r'))
+    next(points_data) #skip header in csv file
+    points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
+    i = 0
+    for row in points_data:
+        if int(row[0]) == int(customer_number):
+            seven_day_points[i] = row[2]
+            i = i + 1
+        if i >= 7:
+            break
+
+    # with open('customer_points_csv.txt') as csv_file:
+    #     csv_reader = csv.reader(csv_file, delimiter=',')
+    #     line_count = 0
+    #     for row in csv_reader:
+    #         if line_count > 0:
+
+    #     if line_count == 0:
+
+
     negPoints,posPoints = pointCalculations(averages_response,date)
     
-
-
 
 
     return """
@@ -158,12 +184,15 @@ def sample_api_calls():
         <div>%s</div>
         <h1>positive points</h1>
         <div>%s</div>
+        <h1>sorted daily points</h1>
+        <div>%s</div>
     """ % (
         dumps(response.json(), indent=3),
         # dumps(summary_response.json(), indent=3),
         dumps(averages_response.json(), indent=3),
         negPoints,
-        posPoints
+        customer_number,
+        seven_day_points
     )
 
 def pointCalculations(averages_response,day):
