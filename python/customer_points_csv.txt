@@ -1,1 +1,4 @@
-customerID, date, points, onPeakKwh, offPeakKwh
+customerID,date,points,onPeakKwh,offPeakKwh
+123456,2019-12-14,20,2,3
+123457,2019-12-15,25,1,4
+123458,2019-12-13,10,5,1
