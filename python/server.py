@@ -152,8 +152,15 @@ def sample_api_calls():
     # Retrieve customer points data for last seven days
     seven_day_points = [0] * 7
     points_data = csv.reader(open('customer_points_csv.txt', 'r'))
-    next(points_data)
-    points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"))
+    next(points_data) #skip header in csv file
+    points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
+    i = 0
+    for row in points_data:
+        if int(row[0]) == int(customer_number):
+            seven_day_points[i] = row[2]
+            i = i + 1
+        if i >= 7:
+            break
 
     # with open('customer_points_csv.txt') as csv_file:
     #     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -166,8 +173,6 @@ def sample_api_calls():
 
     negPoints,posPoints = pointCalculations(averages_response,date)
     
-
-
 
 
     return """
@@ -186,8 +191,8 @@ def sample_api_calls():
         # dumps(summary_response.json(), indent=3),
         dumps(averages_response.json(), indent=3),
         negPoints,
-        posPoints,
-        points_data
+        customer_number,
+        seven_day_points
     )
 
 def pointCalculations(averages_response,day):
