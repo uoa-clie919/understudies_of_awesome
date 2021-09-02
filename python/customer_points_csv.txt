@@ -1,0 +1,1 @@
+customerID, date, points, onPeakKwh, offPeakKwh
