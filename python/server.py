@@ -37,6 +37,10 @@ scope = decouple.config("SCOPES", cast=lambda v: [s.strip() for s in v.split(','
 # An unguessable random string. It is used to protect against CSRF attacks.
 state = "super-secret-state"
 
+date = "2019-12-14"
+
+
+
 # API endpoints
 SESSION_ENDPOINT = f"{API_URL}/session/"
 CONSUMPTION_SUMMARY_ENDPOINT = f"{API_URL}/consumption/summary/"+"{}/{}/?start_date=2019-12-14&end_date=2019-12-18"
@@ -138,16 +142,32 @@ def sample_api_calls():
     averages_response = oauth_session.get(
         CONSUMPTION_AVERAGE_ENDPOINT.format(customer_number, connection_id)
     )
+    points=0
+    for i in averages_response.json()["data"]["usage"][date]["intervals"]:
+        amount = averages_response.json()["data"]["usage"][date]["intervals"][i]["consumption"]
+        hour = averages_response.json()["data"]["usage"][date]["intervals"][i]["time"]
+        hour = hour[0]
+
+        if hour == "6" or hour == "7" or hour == "8":
+            points = points - 10*float(amount)
+        else:
+            points = points + 10*float(amount)
+
+        
+
 
     return """
         <h1>/session/ response</h1>
         <div>%s</div>
         <h1>consumption averages</h1>
         <div>%s</div>
+        <h1>points</h1>
+        <div>%s</div>
     """ % (
         dumps(response.json(), indent=3),
         # dumps(summary_response.json(), indent=3),
-        dumps(averages_response.json(), indent=3)
+        dumps(averages_response.json(), indent=3),
+        points
     )
 
 
@@ -156,3 +176,4 @@ if __name__ == "__main__":
     app.config["SESSION_TYPE"] = "filesystem"
     app.debug = True
     app.run(host=HOST, port=PORT)
+
