@@ -5,13 +5,15 @@ from json import dumps
 import decouple
 import time
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from oauthlib.common import urldecode
 from oauthlib.oauth2 import WebApplicationClient
 from requests_oauthlib import OAuth2Session
 
 from flask import Flask, request, redirect, session
+
+# from badges import * 
 
 # To prevent errors while running on localhost over HTTP rather than HTTPS
 import os
@@ -47,7 +49,7 @@ date = "2019-12-14"
 # API endpoints
 SESSION_ENDPOINT = f"{API_URL}/session/"
 CONSUMPTION_SUMMARY_ENDPOINT = f"{API_URL}/consumption/summary/"+"{}/{}/?start_date=2019-12-14&end_date=2019-12-18"
-CONSUMPTION_AVERAGE_ENDPOINT = f"{API_URL}/consumption/averages/"+"{}/{}/?start_date=2019-12-14&end_date=2019-12-15"
+CONSUMPTION_AVERAGE_ENDPOINT = f"{API_URL}/consumption/averages/"+"{}/{}/?start_date=2019-12-10&end_date=2019-12-14"
 
 
 @app.route("/")
@@ -150,11 +152,35 @@ def sample_api_calls():
     )
 
     # Retrieve customer points data for last seven days
-    seven_day_points = [0] * 7
-    points_data = csv.reader(open('customer_points_csv.txt', 'r'))
+    f = open('customer_points_csv.txt')
+    points_data = csv.reader(f)
     next(points_data) #skip header in csv file
+    # Sort data by date
     points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
-    i = 0
+    # Check if data needs to be uploaded
+    for row in points_data:
+        if int(row[0]) == int(customer_number):
+            if str(row[1]) == date:
+                # today's date
+                break
+            if datetime.strptime(row[1], "%Y-%m-%d") == datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1):
+                # yesterday, update with today's data
+                n_points,p_points = pointCalculations(averages_response,date)
+                f.close()
+                with open('customer_points_csv.txt', 'a') as fd:
+                    fd.write(customer_number + ',' + date + ',' + str(n_points + p_points) + ',' + str(n_points / 10) + ',' + str(p_points / 10))
+                break
+            else:
+                # historical data must be uploaded
+                f.close()
+                with open('customer_points_csv.txt', 'a') as fd:
+                    for d in averages_response.json()["data"]["usage"]:
+                        n_points,p_points = pointCalculations(averages_response, d)
+                        fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
+                break
+    
+    seven_day_points = [0] * 7   
+    i = 0 #index seven_day_points array
     for row in points_data:
         if int(row[0]) == int(customer_number):
             seven_day_points[i] = row[2]
@@ -162,13 +188,6 @@ def sample_api_calls():
         if i >= 7:
             break
 
-    # with open('customer_points_csv.txt') as csv_file:
-    #     csv_reader = csv.reader(csv_file, delimiter=',')
-    #     line_count = 0
-    #     for row in csv_reader:
-    #         if line_count > 0:
-
-    #     if line_count == 0:
 
 
     negPoints,posPoints = pointCalculations(averages_response,date)
