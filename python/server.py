@@ -207,7 +207,12 @@ def sample_api_calls():
         if i >= 7:
             break    
 
-    
+    # Calculate total points
+    total_points = 0.0
+    for row in points_data:
+        if int(row[0]) == int(customer_number): # check if correct customer
+            total_points = total_points + float(row[2])
+
 
 
     return render_template('./web.html', points = 150)
