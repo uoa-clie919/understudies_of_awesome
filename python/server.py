@@ -214,7 +214,7 @@ def sample_api_calls():
             total_points = total_points + float(row[2])
 
     # Carbon emissions
-    carbon_emissions = seven_day_points[0] * / 10 / 0.1287 / 1000
+    carbon_emissions = float(seven_day_points[0][1]) / 10 * 0.1287 / 1000
 
     return render_template('./web.html', points = total_points, carbon= carbon_emissions, pointGraph = seven_day_points )
     

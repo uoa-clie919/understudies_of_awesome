@@ -93,11 +93,11 @@ chart.draw(data, google.charts.Line.convertOptions(options));
                 var el = document.getElementById('carbon');
                 var image; 
                 if  ( {{carbon}} < 0.001) {
-                    image = '<img src="/static/Images/Tree1.jpg" alt="sapling" style="width:500px;">';
+                    image = '<img src="/static/Images/Green.jpg" alt="sapling" style="width:500px;">';
                 }else if({{carbon}}<0.002){
-                    image = '<img src="/static/Images/Tree2.jpg" alt="teen tree" style="width:500px;">';
+                    image = '<img src="/static/Images/Yellow.jpg" alt="teen tree" style="width:500px;">';
                 }else{
-                    image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree" style="width:500px;">';
+                    image = '<img src="/static/Images/Red.jpg" alt="ancient tree" style="width:500px;">';
                 }
                 el.insertAdjacentHTML('afterbegin', image);
             </script>
