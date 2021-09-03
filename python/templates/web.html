@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="web.css">
+    <link rel="stylesheet" href="/static/web.css">
     <title>Out of Spite</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,19 +62,19 @@ chart.draw(data, google.charts.Line.convertOptions(options));
 </head>
 
 <body>
-    <div class="tree">
+    <div class="tree" id="treediv">
 
         <script>      
-            var el = document.getElementById('tree');
+            var el = document.getElementById('treediv');
             var image; 
-            if  (points< 50) {
-                image = '<img src="Images/Tree1.jpg" alt="sapling">';
-            }else if(points<100){
-                image = '<img src="Images/Tree2.jpg" alt="teen tree">';
-            }else if (points<200){
-                image = '<img src="Images/Tree3.jpg" alt="adult tree">';
+            if  ( {{points}} < 50) {
+                image = '<img src="/static/Images/Tree1.jpg" alt="sapling">';
+            }else if({{points}}<100){
+                image = '<img src="/static/Images/Tree2.jpg" alt="teen tree">';
+            }else if ({{points}}<200){
+                image = '<img src="/static/Images/Tree3.jpg" alt="adult tree">';
             }else{
-                image = '<img src="Images/Tree4.jpg" alt="ancient tree">';
+                image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree">';
             }
             el.insertAdjacentHTML('afterbegin', image);
 

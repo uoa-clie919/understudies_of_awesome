@@ -12,7 +12,7 @@ from oauthlib.common import urldecode
 from oauthlib.oauth2 import WebApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from flask import Flask, request, redirect, session
+from flask import Flask, request, redirect, session, render_template
 
 # To prevent errors while running on localhost over HTTP rather than HTTPS
 import os
@@ -204,33 +204,32 @@ def sample_api_calls():
             seven_day_points[i] = ["{} days ago".format(i), row[2], 20]
             i = i + 1
         if i >= 7:
-            break
+            break    
 
-
-
-    negPoints,posPoints = pointCalculations(averages_response,date)
     
 
 
-    return """
-        <h1>/session/ response</h1>
-        <div>%s</div>
-        <h1>consumption averages</h1>
-        <div>%s</div>
-        <h1>negative points</h1>
-        <div>%s</div>
-        <h1>positive points</h1>
-        <div>%s</div>
-        <h1>sorted daily points</h1>
-        <div>%s</div>
-    """ % (
-        dumps(response.json(), indent=3),
-        # dumps(summary_response.json(), indent=3),
-        dumps(averages_response.json(), indent=3),
-        negPoints,
-        customer_number,
-        seven_day_points
-    )
+    return render_template('./web.html', points = 150)
+    
+    # """
+    #     <h1>/session/ response</h1>
+    #     <div>%s</div>
+    #     <h1>consumption averages</h1>
+    #     <div>%s</div>
+    #     <h1>negative points</h1>
+    #     <div>%s</div>
+    #     <h1>positive points</h1>
+    #     <div>%s</div>
+    #     <h1>sorted daily points</h1>
+    #     <div>%s</div>
+    # """ % (
+    #     dumps(response.json(), indent=3),
+    #     # dumps(summary_response.json(), indent=3),
+    #     dumps(averages_response.json(), indent=3),
+    #     negPoints,
+    #     customer_number,
+    #     seven_day_points
+    # )
 
 def pointCalculations(averages_response,day):
     npoints=0
