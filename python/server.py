@@ -192,6 +192,7 @@ def sample_api_calls():
                 fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
         data_updated_flag = True
 
+    # Add daily points from last seven days to array
     f = open('customer_points_csv.txt')
     points_data = csv.reader(f)
     next(points_data) #skip header in csv file
