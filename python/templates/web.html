@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/web.css">
+    <title>Out of Spite</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Quicksand', sans-serif;
+      }
+    </style>
+
+
+    <script  type="text/javascript">
+
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['line']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+var data = new google.visualization.DataTable();
+data.addColumn('string', 'Day');
+data.addColumn('number', 'Your Usage');
+data.addColumn('number', 'Average Usage');
+
+data.addRows([
+  ["Monday",  37.8, 80.8],
+  ["Tuesday",  30.9, 69.5],
+  ["Wednesday",  25.4,   57],
+  ["Thursday",  11.7, 18.8],
+  ["Friday",  11.9, 17.6],
+  ["Saturday",   8.8, 13.6],
+  ["Sunday",   7.6, 12.3]
+]);
+
+var options = {
+  chart: {
+  },
+  width: 900,
+  height: 500
+};
+
+var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+chart.draw(data, google.charts.Line.convertOptions(options));
+}
+    </script>
+
+
+
+
+</head>
+
+<body>
+    <div class="tree" >
+        <div id="treediv">
+        <script>      
+            var el = document.getElementById('treediv');
+            var image; 
+            if  ( {{points}} < 50) {
+                image = '<img src="/static/Images/Tree1.jpg" alt="sapling" style="width:500px;">';
+            }else if({{points}}<100){
+                image = '<img src="/static/Images/Tree2.jpg" alt="teen tree" style="width:500px;">';
+            }else if ({{points}}<200){
+                image = '<img src="/static/Images/Tree3.jpg" alt="adult tree" style="width:500px;">';
+            }else{
+                image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree" style="width:500px;">';
+            }
+            el.insertAdjacentHTML('afterbegin', image);
+        </script>
+        </div>
+       <h2>Your Total Points: {{points}} </h2>
+
+
+
+
+    </div>
+
+    <div class="graphs">
+        <h2>Your Carbon Footprint for This Year</h2>
+        <div id="carbon">
+            <script>      
+                var el = document.getElementById('carbon');
+                var image; 
+                if  ( {{carbon}} < 0.001) {
+                    image = '<img src="/static/Images/Tree1.jpg" alt="sapling" style="width:500px;">';
+                }else if({{carbon}}<0.002){
+                    image = '<img src="/static/Images/Tree2.jpg" alt="teen tree" style="width:500px;">';
+                }else{
+                    image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree" style="width:500px;">';
+                }
+                el.insertAdjacentHTML('afterbegin', image);
+            </script>
+        </div>
+
+
+
+        <h2>Average Electricy usage in a household</h2>
+        <div id="linechart_material" style="width: 900px; height: 500px"></div>
+
+        
+    </div>
+
+    <div class="leaderboard">
+        <h2>
+            Compete with your freinds or neighbours!
+        </h2>
+
+        
+    </div>
+
+    <div class="badges">
+        <h2>
+            Badges you have earnt!
+        </h2>
+
+        
+    </div>
+
+
+
+</body>
+
+</html>
