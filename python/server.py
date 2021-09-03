@@ -213,7 +213,8 @@ def sample_api_calls():
         if int(row[0]) == int(customer_number): # check if correct customer
             total_points = total_points + float(row[2])
 
-
+    # Carbon emissions
+    carbon_emissions = seven_day_points[0] * / 10 / 0.1287 / 1000
 
     return render_template('./web.html', points = 150)
     
