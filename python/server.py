@@ -1,3 +1,4 @@
+from python.badges import Badges
 import requests
 
 from json import dumps
@@ -19,6 +20,8 @@ from flask import Flask, request, redirect, session
 import os
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+user1000003 = Badges()
 
 app = Flask(__name__)
 # Host and IP for the local server, running on http://host:port
