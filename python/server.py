@@ -1,4 +1,4 @@
-from python.badges import Badges
+#from python.badges import Badges
 import requests
 
 from json import dumps
@@ -14,14 +14,12 @@ from requests_oauthlib import OAuth2Session
 
 from flask import Flask, request, redirect, session
 
-# from badges import * 
-
 # To prevent errors while running on localhost over HTTP rather than HTTPS
 import os
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-user1000003 = Badges()
+#user1000003 = Badges()
 
 app = Flask(__name__)
 # Host and IP for the local server, running on http://host:port
@@ -199,11 +197,11 @@ def sample_api_calls():
     next(points_data) #skip header in csv file
     # Sort data by date
     points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
-    seven_day_points = [0] * 7   
+    seven_day_points = [["days ago", 0.0, 0.0]] * 7   
     i = 0 #index seven_day_points array
     for row in points_data:
         if int(row[0]) == int(customer_number):
-            seven_day_points[i] = row[2]
+            seven_day_points[i] = ["{} days ago".format(i), row[2], 20]
             i = i + 1
         if i >= 7:
             break
