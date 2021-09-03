@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="web.css">
+    <title>CSS Test</title>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['line']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+var data = new google.visualization.DataTable();
+data.addColumn('string', 'Day');
+data.addColumn('number', 'Your Usage');
+data.addColumn('number', 'Average Usage');
+
+data.addRows([
+  ["Monday",  37.8, 80.8],
+  ["Tuesday",  30.9, 69.5],
+  ["Wednesday",  25.4,   57],
+  ["Thursday",  11.7, 18.8],
+  ["Friday",  11.9, 17.6],
+  ["Saturday",   8.8, 13.6],
+  ["Sunday",   7.6, 12.3]
+]);
+
+var options = {
+  chart: {
+    title: 'Average Electricty Usage',
+    subtitle: 'In a Household'
+  },
+  width: 900,
+  height: 500
+};
+
+var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+chart.draw(data, google.charts.Line.convertOptions(options));
+}
+    </script>
+
+
+
+
+</head>
+
+<body>
+    <div class="tree">
+        <p>
+            This is the tree tag
+        </p>
+
+
+    </div>
+
+    <div class="graphs">
+        <div id="linechart_material" style="width: 900px; height: 500px"></div>
+
+        
+    </div>
+
+    <div class="leaderboard">
+
+        
+    </div>
+
+    <div class="badges">
+
+        
+    </div>
+
+
+
+</body>
+
+</html>

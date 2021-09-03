@@ -1,0 +1,30 @@
+body{
+    background-color: white;
+}
+.tree{
+    padding: 10px 30px;
+    margin:10px 30px;
+    background-color: #d0edcb;
+
+}
+
+.graphs{
+    padding: 10px 30px;
+    margin:10px 30px;
+    background-color: #fff2b2;
+
+}
+
+.leaderboard{
+    padding: 10px 30px;
+    margin:10px 30px;
+    background-color: #fae6e8;
+
+}
+
+.badges{
+    padding: 10px 30px;
+    margin:10px 30px;
+    background-color: #e5f1fb;
+
+}
