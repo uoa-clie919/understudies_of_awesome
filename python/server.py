@@ -157,11 +157,13 @@ def sample_api_calls():
     next(points_data) #skip header in csv file
     # Sort data by date
     points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
+    data_updated_flag = False
     # Check if data needs to be uploaded
     for row in points_data:
         if int(row[0]) == int(customer_number):
             if str(row[1]) == date:
                 # today's date
+                data_updated_flag = True
                 break
             if datetime.strptime(row[1], "%Y-%m-%d") == datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1):
                 # yesterday, update with today's data
@@ -169,6 +171,7 @@ def sample_api_calls():
                 f.close()
                 with open('customer_points_csv.txt', 'a') as fd:
                     fd.write(customer_number + ',' + date + ',' + str(n_points + p_points) + ',' + str(n_points / 10) + ',' + str(p_points / 10))
+                data_updated_flag = True
                 break
             else:
                 # historical data must be uploaded
@@ -177,8 +180,22 @@ def sample_api_calls():
                     for d in averages_response.json()["data"]["usage"]:
                         n_points,p_points = pointCalculations(averages_response, d)
                         fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
+                data_updated_flag = True
                 break
-    
+    if data_updated_flag == False:
+        # historical data must be uploaded
+        f.close()
+        with open('customer_points_csv.txt', 'a') as fd:
+            for d in averages_response.json()["data"]["usage"]:
+                n_points,p_points = pointCalculations(averages_response, d)
+                fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
+        data_updated_flag = True
+
+    f = open('customer_points_csv.txt')
+    points_data = csv.reader(f)
+    next(points_data) #skip header in csv file
+    # Sort data by date
+    points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
     seven_day_points = [0] * 7   
     i = 0 #index seven_day_points array
     for row in points_data:
