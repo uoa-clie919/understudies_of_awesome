@@ -216,7 +216,7 @@ def sample_api_calls():
     # Carbon emissions
     carbon_emissions = seven_day_points[0] * / 10 / 0.1287 / 1000
 
-    return render_template('./web.html', points = total_points, carbon= 150, pointGraph = seven_day_points )
+    return render_template('./web.html', points = total_points, carbon= carbon_emissions, pointGraph = seven_day_points )
     
     # """
     #     <h1>/session/ response</h1>
