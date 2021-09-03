@@ -1,4 +1,4 @@
-from python.badges import Badges
+#from python.badges import Badges
 import requests
 
 from json import dumps
@@ -14,14 +14,12 @@ from requests_oauthlib import OAuth2Session
 
 from flask import Flask, request, redirect, session
 
-# from badges import * 
-
 # To prevent errors while running on localhost over HTTP rather than HTTPS
 import os
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-user1000003 = Badges()
+#user1000003 = Badges()
 
 app = Flask(__name__)
 # Host and IP for the local server, running on http://host:port
@@ -160,11 +158,13 @@ def sample_api_calls():
     next(points_data) #skip header in csv file
     # Sort data by date
     points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
+    data_updated_flag = False
     # Check if data needs to be uploaded
     for row in points_data:
         if int(row[0]) == int(customer_number):
             if str(row[1]) == date:
                 # today's date
+                data_updated_flag = True
                 break
             if datetime.strptime(row[1], "%Y-%m-%d") == datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1):
                 # yesterday, update with today's data
@@ -172,6 +172,7 @@ def sample_api_calls():
                 f.close()
                 with open('customer_points_csv.txt', 'a') as fd:
                     fd.write(customer_number + ',' + date + ',' + str(n_points + p_points) + ',' + str(n_points / 10) + ',' + str(p_points / 10))
+                data_updated_flag = True
                 break
             else:
                 # historical data must be uploaded
@@ -180,13 +181,27 @@ def sample_api_calls():
                     for d in averages_response.json()["data"]["usage"]:
                         n_points,p_points = pointCalculations(averages_response, d)
                         fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
+                data_updated_flag = True
                 break
-    
-    seven_day_points = [0] * 7   
+    if data_updated_flag == False:
+        # historical data must be uploaded
+        f.close()
+        with open('customer_points_csv.txt', 'a') as fd:
+            for d in averages_response.json()["data"]["usage"]:
+                n_points,p_points = pointCalculations(averages_response, d)
+                fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
+        data_updated_flag = True
+
+    f = open('customer_points_csv.txt')
+    points_data = csv.reader(f)
+    next(points_data) #skip header in csv file
+    # Sort data by date
+    points_data = sorted(points_data, key = lambda row: datetime.strptime(row[1], "%Y-%m-%d"), reverse=True)
+    seven_day_points = [["days ago", 0.0, 0.0]] * 7   
     i = 0 #index seven_day_points array
     for row in points_data:
         if int(row[0]) == int(customer_number):
-            seven_day_points[i] = row[2]
+            seven_day_points[i] = ["{} days ago".format(i), row[2], 20]
             i = i + 1
         if i >= 7:
             break
