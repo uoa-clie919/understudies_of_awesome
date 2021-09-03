@@ -215,7 +215,7 @@ def sample_api_calls():
 
 
 
-    return render_template('./web.html', points = 150)
+    return render_template('./web.html', points = total_points, carbon= 150, pointGraph = seven_day_points )
     
     # """
     #     <h1>/session/ response</h1>

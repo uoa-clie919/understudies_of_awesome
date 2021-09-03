@@ -62,25 +62,24 @@ chart.draw(data, google.charts.Line.convertOptions(options));
 </head>
 
 <body>
-    <div class="tree" id="treediv">
-
+    <div class="tree" >
+        <div id="treediv">
         <script>      
             var el = document.getElementById('treediv');
             var image; 
             if  ( {{points}} < 50) {
-                image = '<img src="/static/Images/Tree1.jpg" alt="sapling">';
+                image = '<img src="/static/Images/Tree1.jpg" alt="sapling" style="width:500px;">';
             }else if({{points}}<100){
-                image = '<img src="/static/Images/Tree2.jpg" alt="teen tree">';
+                image = '<img src="/static/Images/Tree2.jpg" alt="teen tree" style="width:500px;">';
             }else if ({{points}}<200){
-                image = '<img src="/static/Images/Tree3.jpg" alt="adult tree">';
+                image = '<img src="/static/Images/Tree3.jpg" alt="adult tree" style="width:500px;">';
             }else{
-                image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree">';
+                image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree" style="width:500px;">';
             }
             el.insertAdjacentHTML('afterbegin', image);
-
-        
         </script>
-       <h2>Your Total Points:</h2>
+        </div>
+       <h2>Your Total Points: {{points}} </h2>
 
 
 
@@ -88,7 +87,21 @@ chart.draw(data, google.charts.Line.convertOptions(options));
     </div>
 
     <div class="graphs">
-        <h2>Your Carbon Footprint</h2>
+        <h2>Your Carbon Footprint for This Year</h2>
+        <div id="carbon">
+            <script>      
+                var el = document.getElementById('carbon');
+                var image; 
+                if  ( {{carbon}} < 0.001) {
+                    image = '<img src="/static/Images/Tree1.jpg" alt="sapling" style="width:500px;">';
+                }else if({{carbon}}<0.002){
+                    image = '<img src="/static/Images/Tree2.jpg" alt="teen tree" style="width:500px;">';
+                }else{
+                    image = '<img src="/static/Images/Tree4.jpg" alt="ancient tree" style="width:500px;">';
+                }
+                el.insertAdjacentHTML('afterbegin', image);
+            </script>
+        </div>
 
 
 
