@@ -192,6 +192,7 @@ def sample_api_calls():
                 fd.write("\n" + str(customer_number) + "," + date + "," + str(n_points + p_points) + "," + str(n_points / 10) + "," + str(p_points / 10))
         data_updated_flag = True
 
+    # Add daily points from last seven days to array
     f = open('customer_points_csv.txt')
     points_data = csv.reader(f)
     next(points_data) #skip header in csv file
@@ -205,7 +206,12 @@ def sample_api_calls():
             i = i + 1
         if i >= 7:
             break
-
+    
+    # Calculate total points
+    total_points = 0.0
+    for row in points_data:
+        if int(row[0]) == int(customer_number): # check if correct customer
+            total_points = total_points + float(row[2])
 
 
     negPoints,posPoints = pointCalculations(averages_response,date)
@@ -215,18 +221,17 @@ def sample_api_calls():
     return """
         <h1>/session/ response</h1>
         <div>%s</div>
-        <h1>consumption averages</h1>
-        <div>%s</div>
+        <h1>total points</h1>
+        <div>%s</div>-
         <h1>negative points</h1>
         <div>%s</div>
-        <h1>positive points</h1>
+        <h1>customer num</h1>
         <div>%s</div>
         <h1>sorted daily points</h1>
         <div>%s</div>
     """ % (
         dumps(response.json(), indent=3),
-        # dumps(summary_response.json(), indent=3),
-        dumps(averages_response.json(), indent=3),
+        total_points,
         negPoints,
         customer_number,
         seven_day_points
