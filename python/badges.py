@@ -1,7 +1,7 @@
 from datetime import date
 
 class Badges:
-    def __init__(self, customerID):
+    def __init__(self):
         self.badgeList = [False,False,False,False,False,False,False,False]
         
 

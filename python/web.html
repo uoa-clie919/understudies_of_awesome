@@ -5,7 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="web.css">
-    <title>CSS Test</title>
+    <title>Out of Spite</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet"> 
+    <style>
+      body {
+        font-family: 'Quicksand', sans-serif;
+      }
+    </style>
+
+
+    <script  type="text/javascript">
+
+    </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -31,8 +45,6 @@ data.addRows([
 
 var options = {
   chart: {
-    title: 'Average Electricty Usage',
-    subtitle: 'In a Household'
   },
   width: 900,
   height: 500
@@ -51,25 +63,53 @@ chart.draw(data, google.charts.Line.convertOptions(options));
 
 <body>
     <div class="tree">
-        <p>
-            This is the tree tag
-        </p>
+
+        <script>      
+            var el = document.getElementById('tree');
+            var image; 
+            if  (points< 50) {
+                image = '<img src="Images/Tree1.jpg" alt="sapling">';
+            }else if(points<100){
+                image = '<img src="Images/Tree2.jpg" alt="teen tree">';
+            }else if (points<200){
+                image = '<img src="Images/Tree3.jpg" alt="adult tree">';
+            }else{
+                image = '<img src="Images/Tree4.jpg" alt="ancient tree">';
+            }
+            el.insertAdjacentHTML('afterbegin', image);
+
+        
+        </script>
+       <h2>Your Total Points:</h2>
+
+
 
 
     </div>
 
     <div class="graphs">
+        <h2>Your Carbon Footprint</h2>
+
+
+
+        <h2>Average Electricy usage in a household</h2>
         <div id="linechart_material" style="width: 900px; height: 500px"></div>
 
         
     </div>
 
     <div class="leaderboard">
+        <h2>
+            Compete with your freinds or neighbours!
+        </h2>
 
         
     </div>
 
     <div class="badges">
+        <h2>
+            Badges you have earnt!
+        </h2>
 
         
     </div>
