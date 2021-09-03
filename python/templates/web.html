@@ -33,7 +33,7 @@ data.addColumn('string', 'Day');
 data.addColumn('number', 'Your Usage');
 data.addColumn('number', 'Average Usage');
 
-data.addRows([['0 days ago', 91.30000000000001, 20.0], ['1 days ago', 86.6, 20.0], ['2 days ago', 117.5, 20.0], ['3 days ago', 104.00000000000003, 20.0], ['4 days ago', 97.10000000000002, 20.0], ['5 days ago', 25.0, 20.0], ['days ago', 0.0, 0.0]]
+data.addRows([['0 days ago', 91.30000000000001, 20.0], ['1 days ago', 86.6, 20.0], ['2 days ago', 117.5, 20.0], ['3 days ago', 104.00000000000003, 20.0], ['4 days ago', 97.10000000000002, 20.0], ['5 days ago', 25.0, 20.0], ['6 days ago', 25.0, 20.0]]
 );
 
 var options = {
@@ -80,7 +80,7 @@ chart.draw(data, google.charts.Line.convertOptions(options));
     </div>
 
     <div class="graphs">
-        <h2>Your Carbon Footprint for This Year</h2>
+        <h2>Your Carbon Footprint for This Year {{carbon}}</h2>
         <div id="carbon">
             <script>      
                 var el = document.getElementById('carbon');
@@ -90,7 +90,7 @@ chart.draw(data, google.charts.Line.convertOptions(options));
                 }else if({{carbon}}<0.002){
                     image = '<img src="/static/Images/Yellow.jpg" alt="ok footprint" style="width:500px;">';
                 }else{
-                    image = '<img src="/static/Images/Red.jpg" alt="bad footprint style="width:500px;">';
+                    image = '<img src="/static/Images/Red.jpg" alt="bad footprint" style="width:500px;">';
                 }
                 el.insertAdjacentHTML('afterbegin', image);
             </script>
@@ -112,6 +112,20 @@ chart.draw(data, google.charts.Line.convertOptions(options));
         <h2>
             Compete with your freinds or neighbours!
         </h2>
+        <div class='left'>
+            <img src="/static/Images/ChrisBadge.jpg" alt="bad footprint" style="width:200px;">
+
+            <p>
+                Chris has 352 points
+            </p>
+        </div>
+
+        <div class='right'>
+            <img src="/static/Images/EkayBadge.jpg" alt="bad footprint" style="width:200px;">
+            <p>
+                Ekay has 250 points
+            </p>
+        </div>
 
         
     </div>
@@ -121,23 +135,25 @@ chart.draw(data, google.charts.Line.convertOptions(options));
             Badges you have earnt!
         </h2>
 
-        <div id='left'>
-            <script>      
-                var el = document.getElementById('left');
-                var image; 
-                if  ( {{badge1}}) {
-                    image = '<img src="/static/Images/kiwi_app_icon.PNG" alt="log in" style="width:100px;">';
-                el.insertAdjacentHTML('afterbegin', image);
-            </script>
-
+        <div class='left'>
+            <img src="/static/Images/kiwi_app_icon.PNG" alt="bad footprint" style="width:100px;">
+            <p>
+                For logging in for the first time
+            </p>
         </div>
 
-        <div id='center'>
-
+        <div class='center'>
+            <img src="/static/Images/DogBadge.jpg" alt="bad footprint" style="width:100px;">
+            <p>
+                Getting over 50 points
+            </p>
         </div>
 
-        <div id='right'>
-
+        <div class='right'>
+            <img src="/static/Images/ToastBadge.jpg" alt="bad footprint" style="width:100px;">
+            <p>
+                Getting over 500 points
+            </p>
         </div>
 
         
