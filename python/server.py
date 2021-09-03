@@ -1,4 +1,4 @@
-#from python.badges import Badges
+from badges import Badges
 import requests
 
 from json import dumps
@@ -20,7 +20,7 @@ import os
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 #user1000003 = Badges()
-
+user = Badges()
 app = Flask(__name__)
 # Host and IP for the local server, running on http://host:port
 HOST = decouple.config("HOST")
@@ -202,7 +202,7 @@ def sample_api_calls():
     i = 0 #index seven_day_points array
     for row in points_data:
         if int(row[0]) == int(customer_number):
-            seven_day_points[i] = ["{} days ago".format(i), row[2], 20]
+            seven_day_points[i] = ["{} days ago".format(i), float(row[2]), float(20)]
             i = i + 1
         if i >= 7:
             break    
@@ -215,8 +215,18 @@ def sample_api_calls():
 
     # Carbon emissions
     carbon_emissions = float(seven_day_points[0][1]) / 10 * 0.1287 / 1000
+    user.checkLogInBadge()
+    user.checkMilestone2Badge(total_points)
+    user.checkMilestone3Badge(total_points)
+    user.checkMilestoneBadge(total_points)
+    user.checkXmasBadge()
 
-    return render_template('./web.html', points = total_points, carbon= carbon_emissions, pointGraph = seven_day_points )
+    bad1 = user.getBadge(1)
+    bad2 = user.getBadge(2)
+    bad3 = user.getBadge(3)
+
+    return render_template('./web.html', points = total_points, carbon= carbon_emissions,
+     pointGraph = seven_day_points , badge1 = bad1, badge2 = bad2, badge3 = bad3 )
     
     # """
     #     <h1>/session/ response</h1>
